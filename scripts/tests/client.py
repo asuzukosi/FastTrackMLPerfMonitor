@@ -1,5 +1,9 @@
 import time
+import random
 from locust import HttpUser, User, wait_time, task, between
+# import aim and mlflow sdk
+import aim
+import mlflow # mlflow sdk is used for both mlflow and fastrackml
 
 # TODO: add tags to the tests
     
@@ -8,7 +12,7 @@ class PerfTestMLFlowClient(User):
     
     def on_start(self):
         # set up mlflow client
-        return super().on_start()
+        return 
     @task
     def test_create_experiments(self):
         pass
@@ -16,10 +20,7 @@ class PerfTestMLFlowClient(User):
     @task
     def test_get_experiments(self):
         pass
-    
-    @task
-    def test_search_experiments(self):
-        pass
+
     
     @task
     def test_delete_restore_experiments(self):
