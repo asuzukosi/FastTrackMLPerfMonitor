@@ -43,3 +43,8 @@ def write_baseline(test_name, exec_time):
 
     with open(filename, 'a+') as f:
         f.write(f'{test_name} {exec_time}\n')
+        
+        
+        
+        
+MLFLOW_EXPERIMENT_ID = 'test_mlflow_experiment'

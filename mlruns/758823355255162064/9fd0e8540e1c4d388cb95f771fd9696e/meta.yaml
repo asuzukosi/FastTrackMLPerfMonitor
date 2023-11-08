@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/kosisochukwuasuzu/Developer/distributed_systems/FastTrackMLPerfMonitor/mlruns/758823355255162064/9fd0e8540e1c4d388cb95f771fd9696e/artifacts
+end_time: 1699447987928
+entry_point_name: ''
+experiment_id: '758823355255162064'
+lifecycle_stage: active
+run_id: 9fd0e8540e1c4d388cb95f771fd9696e
+run_name: clean-hen-541
+run_uuid: 9fd0e8540e1c4d388cb95f771fd9696e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1699447987921
+status: 3
+tags: []
+user_id: kosisochukwuasuzu

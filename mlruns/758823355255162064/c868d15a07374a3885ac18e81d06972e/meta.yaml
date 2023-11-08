@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/kosisochukwuasuzu/Developer/distributed_systems/FastTrackMLPerfMonitor/mlruns/758823355255162064/c868d15a07374a3885ac18e81d06972e/artifacts
+end_time: 1699448066701
+entry_point_name: ''
+experiment_id: '758823355255162064'
+lifecycle_stage: active
+run_id: c868d15a07374a3885ac18e81d06972e
+run_name: bright-lark-203
+run_uuid: c868d15a07374a3885ac18e81d06972e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1699448066693
+status: 3
+tags: []
+user_id: kosisochukwuasuzu

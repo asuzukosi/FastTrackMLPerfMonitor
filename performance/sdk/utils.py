@@ -1,23 +1,37 @@
 from aim.sdk import Repo
 from aim.sdk.types import QueryReportMode
 from aim.web.api.runs.utils import get_run_props
-from performance.utils import timing
+from performance.utils import timing, MLFLOW_EXPERIMENT_ID
+import mlflow
+
+# @timing()
+# def collect_runs_data(query):
+#     repo = Repo.default_repo()
+#     runs = repo.query_runs(query, report_mode=QueryReportMode.DISABLED)
+#     runs_dict = {}
+#     for run_trace_collection in runs.iter_runs():
+#         run = run_trace_collection.run
+#         runs_dict[run.hash] = {
+#             'params': run[...],
+#             'traces': run.collect_sequence_info(sequence_types='metric'),
+#             'props': get_run_props(run)
+#         }
 
 
 @timing()
 def collect_runs_data(query):
-    repo = Repo.default_repo()
-    runs = repo.query_runs(query, report_mode=QueryReportMode.DISABLED)
+    runs = mlflow.search_runs(experiment_ids=MLFLOW_EXPERIMENT_ID, filter_string=query)
     runs_dict = {}
-    for run_trace_collection in runs.iter_runs():
-        run = run_trace_collection.run
-        runs_dict[run.hash] = {
-            'params': run[...],
-            'traces': run.collect_sequence_info(sequence_types='metric'),
-            'props': get_run_props(run)
+    for index, row in runs.iterrows():
+        runs_dict[index] = {
+            'run_id' : row['run_id'],
+            'metrics': row['metrics'],
+            'params': row['params'],
+            'start_time' : row['start_time'],
+            'end_time' : row['end_time']
+            
         }
-
-
+    
 @timing()
 def collect_metrics_data(query):
     repo = Repo.default_repo()
