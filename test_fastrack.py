@@ -5,6 +5,7 @@ import random
 # mlflow.set_tracking_uri("http://localhost:8000")
 # Set the experiment name
 mlflow.set_experiment("my-first-experiment")
+import aim
 
 # Start a new run
 with mlflow.start_run():
@@ -23,11 +24,12 @@ runs = mlflow.tracking.MlflowClient().search_runs("577243075391975043")
 
 
 
-# mlflow_client = mlflow.tracking.MlflowClient()
+mlflow_client = mlflow.tracking.MlflowClient()
 # fasttrack_client = mlflow.tracking.MlflowClient()
 
 # mlflow_runs = mlflow_client.search_runs("758823355255162064")
 # fasttrack_runs = fasttrack_client.search_runs("758823355255162064")
+
 
 # print("Mlflow runs: ")
 # print(mlflow_runs)
@@ -55,3 +57,9 @@ for run in runs:
 #     }
 # print("The result is ")
 # print(runs_dict)
+
+# repo = aim.Repo()
+# repo.ru
+# runs = repo.query_runs()
+# run = aim.Run()
+# run.
