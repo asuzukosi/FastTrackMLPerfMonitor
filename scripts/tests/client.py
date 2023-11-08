@@ -5,6 +5,9 @@ from locust import HttpUser, User, wait_time, task, between
 import aim
 import mlflow # mlflow sdk is used for both mlflow and fastrackml
 
+
+
+
 # TODO: add tags to the tests
     
 class PerfTestMLFlowClient(User):
