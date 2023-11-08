@@ -1,5 +1,6 @@
 import os
 import time
+import mlflow
 
 # create timer which calls functions a certain number of times
 def timing(iter_count=100):
@@ -44,7 +45,12 @@ def write_baseline(test_name, exec_time):
     with open(filename, 'a+') as f:
         f.write(f'{test_name} {exec_time}\n')
         
-        
-        
-        
-MLFLOW_EXPERIMENT_ID = 'test_mlflow_experiment'
+# setup mlflow client
+MLFLOW_CLIENT = mlflow.tracking.MlflowClient()
+def get_mlflow_experiment():
+    pass
+
+# setup fastrackml client
+FASTTRACK_CLIENT = mlflow.tracking.MlflowClient(tracking_uri="http://localhost:8000")
+def get_fasttrack_experiment():
+    pass

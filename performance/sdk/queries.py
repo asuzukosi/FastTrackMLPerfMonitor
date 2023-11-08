@@ -14,3 +14,7 @@ queries = {
     2: query_2,
     3: query_3,
 }
+
+mlflow_queries = {
+    
+}
