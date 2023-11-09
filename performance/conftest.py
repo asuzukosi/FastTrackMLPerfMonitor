@@ -5,7 +5,7 @@ import time
 from pathlib import Path
 
 from aim.sdk.configs import AIM_REPO_NAME
-from performance.utils import get_baseline_filename, MLFLOW_CLIENT, FASTTRACK_CLIENT
+from performance.utils import get_baseline_filename, MLFLOW_CLIENT, FASTTRACK_CLIENT, generate_html_report
 import random
 from aim import Run
 
@@ -102,6 +102,7 @@ def print_current_baseline():
 
 def pytest_unconfigure(config):
     print_current_baseline()
+    generate_html_report()
 
 def pytest_sessionfinish(session, exitstatus):
     if os.environ.get('AIM_LOCAL_PERFORMANCE_TEST'):

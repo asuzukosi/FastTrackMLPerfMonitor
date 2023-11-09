@@ -5,3 +5,4 @@ aim
 boto3
 pytest
 parameterized==0.8.1
+plotly

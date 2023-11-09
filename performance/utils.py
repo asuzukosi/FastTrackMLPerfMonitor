@@ -3,9 +3,21 @@ import time
 import mlflow
 import pandas as pd
 import datetime
+import sys
+from io import StringIO
+from pathlib import Path
+
+import pandas as pd
+import plotly.express as px
+
+# number of days to look back
+n_days = 180
 
 # set the data output file
 DATA_OUTPUT_FILE = 'performance_data.csv'
+HTML_OUTPUT_FILE = 'results.html'
+
+
 # create timer which calls functions a certain number of times
 def timing(iter_count=10):
     def inner(f):
@@ -97,4 +109,41 @@ def add_tests_results(test_name, aim, mlflow, fasttrack):
         ]
     
     write_data_points_to_csv(data_points)
+
+
+def fetch_csv(csvPath: str) -> pd.DataFrame:
+    return pd.read_csv(csvPath)
+
+def plot_cumulative_state(df: pd.DataFrame, outfile: str):
+    fig = px.line(
+        df,
+        x="timestamp",
+        y="value",
+        title="FastTrackML performance chart",
+        color='application',
+        facet_col="test_name",
+        facet_col_wrap=4,
+        markers=True,
+        hover_data=["application", "test_name", "value"],
         
+    )
+
+    fig.update_traces(marker={'size': 4})
+    fig.update_layout(title_x=0.5)
+    fig.update_yaxes(ticksuffix="%", title='', rangemode="tozero")
+    fig.update_xaxes(title='')
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+
+    fig.write_html(outfile, include_plotlyjs='cdn')
+
+
+def generate_html_report():
+    data = fetch_csv(DATA_OUTPUT_FILE)
+    data["timestamp"] = pd.to_datetime(data["timestamp"])
+
+    now = datetime.datetime.now()
+    cutoff_date = now - datetime.timedelta(days=n_days)
+    data = data.loc[data["timestamp"] > cutoff_date]
+    # data = data.loc[data["test_name"] in ["test_collect_metrics_data_0", "test_collect_metrics_data_1"]]
+
+    plot_cumulative_state(data, HTML_OUTPUT_FILE)
