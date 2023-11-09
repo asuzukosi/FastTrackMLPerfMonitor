@@ -5,18 +5,80 @@ import time
 from pathlib import Path
 
 from aim.sdk.configs import AIM_REPO_NAME
-from performance.utils import get_baseline_filename
+from performance.utils import get_baseline_filename, MLFLOW_CLIENT, FASTTRACK_CLIENT
+import random
+from aim import Run
 
 TEST_REPO_PATHS = {
-    'real_life_repo': '.aim_performance_repo_1',
-    'generated_repo': '.aim_performance_repo_2'
+    'real_life_repo': '.aim',
+    'generated_repo': '.aim'
 }
 # AIM_PERFORMANCE_BUCKET_NAME = 'aim-demo-logs'
 # AIM_PERFORMANCE_LOG_FILE_NAME = 'performance-logs.tar.gz'
 
 
 def _init_test_repos():
-    pass
+    # initialize aim repo and create runs and add metrics to those runs
+    NUM_RUNS = 10000
+    POSSIBLE_METRICS = ["accuracy", "precision", "recall", "loss", "F1", "recall"]
+    POSSIBLE_BATCH_SIZES = [32, 64, 128, 256, 512]
+    POSSIBLE_EXPERIMENT_MODELS = ["VGC", "CNN", "ResNet", "ViT", "U-Net"]
+    for _ in range(NUM_RUNS):
+        run = Run()
+        hparams_dict = {
+            'learning_rate': random.random(),
+            'batch_size': random.choice(POSSIBLE_BATCH_SIZES),
+            "experiment_model": random.choice(POSSIBLE_EXPERIMENT_MODELS)
+        }
+        run['hparams'] = hparams_dict
+        metrics = random.sample(POSSIBLE_METRICS, 3)
+        for _ in range(100):
+            for metric in metrics:
+                run.track(random.random(), metric)
+                
+    # initialize mlflow experiment and create runs and add metric to those runs
+    experiment =  MLFLOW_CLIENT.get_experiment_by_name('test-experiment')
+    if experiment:
+        EXPERIMENT_ID = experiment.experiment_id
+    else:
+        EXPERIMENT_ID = MLFLOW_CLIENT.create_experiment('test-experiment')
+    
+    os.environ['MLFLOW_EXPERIMENT_ID'] = EXPERIMENT_ID
+    
+    for _ in range(NUM_RUNS):
+        run = MLFLOW_CLIENT.create_run(EXPERIMENT_ID)
+        RUN_ID = run.info.run_id
+        MLFLOW_CLIENT.log_param(RUN_ID, "learning_rate", random.random())
+        MLFLOW_CLIENT.log_param(RUN_ID, "batch_size", random.choice(POSSIBLE_BATCH_SIZES))
+        MLFLOW_CLIENT.log_param(RUN_ID, "experiment_model", random.choice(POSSIBLE_EXPERIMENT_MODELS))
+        
+        metrics = random.sample(POSSIBLE_METRICS, 3)
+        for _ in range(100):
+            for metric in metrics:
+                MLFLOW_CLIENT.log_metric(RUN_ID, metric, random.random())
+        
+    # initialize fasttrack experiment and create runs and add metrics to thos runs
+    experiment =  FASTTRACK_CLIENT.get_experiment_by_name('test-experiment')
+    if experiment:
+        EXPERIMENT_ID = experiment.experiment_id
+    else:
+        EXPERIMENT_ID = FASTTRACK_CLIENT.create_experiment('test-experiment')
+    
+    os.environ['FASTTRACK_EXPERIMENT_ID'] = EXPERIMENT_ID
+    
+    for _ in range(NUM_RUNS):
+        run = MLFLOW_CLIENT.create_run(EXPERIMENT_ID)
+        RUN_ID = run.info.run_id
+        FASTTRACK_CLIENT.log_param(RUN_ID, "learning_rate", random.random())
+        FASTTRACK_CLIENT.log_param(RUN_ID, "batch_size", random.choice(POSSIBLE_BATCH_SIZES))
+        FASTTRACK_CLIENT.log_param(RUN_ID, "experiment_model", random.choice(POSSIBLE_EXPERIMENT_MODELS))
+        
+        metrics = random.sample(POSSIBLE_METRICS, 3)
+        for _ in range(100):
+            for metric in metrics:
+                FASTTRACK_CLIENT.log_metric(RUN_ID, metric, random.random())
+        
+    os.environ["INITALIZED"] = True
 
 
 def _cleanup_test_repo(path):
@@ -24,13 +86,9 @@ def _cleanup_test_repo(path):
 
 
 def pytest_sessionstart(session):
-    pass
-    # if os.environ.get('AIM_LOCAL_PERFORMANCE_TEST'):
-    #     _init_test_repos()
-    # else:
-    #     # github actions performance tests on self hosted runner
-    #     os.chdir('/home/ubuntu/performance_logs/')
-    # time.sleep(10)
+    if not os.environ.get('INITIALIZED'):
+        _init_test_repos()
+    time.sleep(10)
 
 def print_current_baseline():
     print('==== CURRENT BASELINE ====')

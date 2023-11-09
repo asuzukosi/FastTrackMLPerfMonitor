@@ -47,10 +47,11 @@ def write_baseline(test_name, exec_time):
         
 # setup mlflow client
 MLFLOW_CLIENT = mlflow.tracking.MlflowClient()
+
 def get_mlflow_experiment():
-    pass
+    return os.environ.get('MLFLOW_EXPERIMENT_ID', '')
 
 # setup fastrackml client
 FASTTRACK_CLIENT = mlflow.tracking.MlflowClient(tracking_uri="http://localhost:8000")
 def get_fasttrack_experiment():
-    pass
+    return os.environ.get('FASTTRACK_EXPERIMENT_ID', '')
