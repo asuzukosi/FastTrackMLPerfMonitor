@@ -56,7 +56,7 @@ def get_mlflow_experiment():
     return os.environ.get('MLFLOW_EXPERIMENT_ID', '')
 
 # setup fastrackml client
-FASTTRACK_CLIENT = mlflow.tracking.MlflowClient(tracking_uri="http://localhost:8000")
+FASTTRACK_CLIENT = mlflow.tracking.MlflowClient(tracking_uri="http://fasttrackml:5000")
 def get_fasttrack_experiment():
     return os.environ.get('FASTTRACK_EXPERIMENT_ID', '')
 

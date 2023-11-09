@@ -3,4 +3,4 @@ report.html
 .aim
 /mlruns
 fasttrackml.db
-scripts
+**/__pycache__/
