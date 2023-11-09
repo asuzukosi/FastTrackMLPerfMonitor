@@ -32,10 +32,5 @@ jobs:
           name: performance_data.csv
           path: performance_data.csv
 
-      - name: Upload html file with benchmark results
-        uses: actions/upload-artifact@v3
-        with:
-          name: results.html
-          path: results.html
 
         

@@ -130,7 +130,7 @@ def plot_cumulative_state(df: pd.DataFrame, outfile: str):
 
     fig.update_traces(marker={'size': 4})
     fig.update_layout(title_x=0.5)
-    fig.update_yaxes(ticksuffix="%", title='', rangemode="tozero")
+    fig.update_yaxes(ticksuffix="", title='', rangemode="tozero")
     fig.update_xaxes(title='')
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
