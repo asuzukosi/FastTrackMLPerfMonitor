@@ -15,7 +15,7 @@ n_days = 180
 
 # set the data output file
 DATA_OUTPUT_FILE = 'performance_data.csv'
-HTML_OUTPUT_FILE = 'results.html'
+HTML_OUTPUT_FILE = '_site/index.html'
 
 
 # create timer which calls functions a certain number of times
