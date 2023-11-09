@@ -6,10 +6,8 @@ import os
 class TestBase(unittest.TestCase):
     @staticmethod
     def assertInRange(new, base, deviation=0.5):
-        upper_limit = base * (1 + deviation)
-        lower_limit = base * (1 - deviation)
-        failure_message = f'execution time {new}  is out of allowed range [{lower_limit},{upper_limit}]'
-        assert lower_limit <= new <= upper_limit, failure_message
+        failure_message = f'execution time {new}  is greater than of allowed range {base}'
+        assert new <= base, failure_message
 
 
 class SDKTestBase(TestBase):

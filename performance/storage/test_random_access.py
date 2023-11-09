@@ -24,6 +24,6 @@ class TestRandomAccess(StorageTestBase):
         
         baseline = get_baseline(test_name)
         if baseline:
-            self.assertInRange(aim_execution_time, baseline)
+            self.assertInRange(fasttrack_execution_time, baseline)
         else:
-            write_baseline(test_name, aim_execution_time)
+            write_baseline(test_name, sum([fasttrack_execution_time, aim_execution_time, mlflow_execution_time])/3)

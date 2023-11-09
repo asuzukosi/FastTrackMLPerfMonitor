@@ -30,9 +30,11 @@ class TestQueryExecutionTime(SDKTestBase):
                           mlflow=mlflow_query_execution_time, fasttrack=fasttrack_query_execution_time)
         baseline = get_baseline(test_name)
         if baseline:
-            self.assertInRange(aim_query_execution_time, baseline)
+            self.assertInRange(fasttrack_query_execution_time, baseline)
         else:
-            write_baseline(test_name, aim_query_execution_time)
+            write_baseline(test_name, sum([fasttrack_query_execution_time, 
+                                           aim_query_execution_time, 
+                                           mlflow_query_execution_time])/3)
 
     @parameterized.expand(queries.items())
     def test_query_metrics(self, query_key, query):
@@ -46,6 +48,8 @@ class TestQueryExecutionTime(SDKTestBase):
                           mlflow=mlflow_query_execution_time, fasttrack=fasttrack_query_execution_time)
         baseline = get_baseline(test_name)
         if baseline:
-            self.assertInRange(aim_query_execution_time, baseline)
+            self.assertInRange(fasttrack_query_execution_time, baseline)
         else:
-            write_baseline(test_name, aim_query_execution_time)
+            write_baseline(test_name, sum([fasttrack_query_execution_time, 
+                                           aim_query_execution_time, 
+                                           mlflow_query_execution_time])/3)
