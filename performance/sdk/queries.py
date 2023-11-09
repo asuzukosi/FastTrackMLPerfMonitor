@@ -9,12 +9,10 @@ query_3 = 'run.hparams.dataset == "cola" ' \
 
 
 queries = {
-    0: query_0,
-    1: query_1,
-    2: query_2,
-    3: query_3,
+    # each query contains a tupple of 2 queries, the first being for aim, while the second being for mlflow and fasttrack
+    0: (query_0, "metric.accuracy > 0"),
+    1: (query_1, "metric.accuracy > 0"),
+    2: (query_2, "metric.accuracy > 0"),
+    3: (query_3, "metric.accuracy > 0"),
 }
 
-mlflow_queries = {
-    
-}

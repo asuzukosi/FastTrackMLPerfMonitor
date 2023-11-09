@@ -100,9 +100,9 @@ def query_metrics_aim(query):
     metrics = list(repo.query_metrics(query=query, report_mode=QueryReportMode.DISABLED).iter())
     
 @timing()
-def query_metric_mlflow(query):
+def query_metrics_mlflow(query):
     runs = list(FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, query=query))
     
 @timing()
-def query_metric_fasttrack(query):
+def query_metrics_fasttrack(query):
     runs = list(FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, query=query))

@@ -7,28 +7,37 @@ from performance.utils import (
 )
 from performance.sdk.queries import queries
 from performance.sdk.utils import (
-    collect_runs_data,
-    collect_metrics_data
+    collect_runs_data_aim,
+    collect_runs_data_mlflow,
+    collect_runs_data_fasttrack,
+    collect_metrics_data_aim,
+    collect_metrics_data_fasttrack,
+    collect_metrics_data_mlflow,
 )
 
 
 class TestDataCollectionExecutionTime(SDKTestBase):
     @parameterized.expand(queries.items())
     def test_collect_runs_data(self, query_key, query):
-        query_execution_time = collect_runs_data(query)
+        aim_query_execution_time = collect_runs_data_aim(query[0])
+        mlflow_query_execution_time = collect_runs_data_mlflow(query[1])
+        fasttrack_query_execution_time = collect_runs_data_fasttrack(query[1])
+        
         test_name = f'test_collect_runs_data_{query_key}'
         baseline = get_baseline(test_name)
         if baseline:
-            self.assertInRange(query_execution_time, baseline)
+            self.assertInRange(aim_query_execution_time, baseline)
         else:
-            write_baseline(test_name, query_execution_time)
+            write_baseline(test_name, aim_query_execution_time)
 
     @parameterized.expand(queries.items())
     def test_collect_metrics_data(self, query_key, query):
-        query_execution_time = collect_metrics_data(query)
+        aim_query_execution_time = collect_metrics_data_aim(query[0])
+        mlflow_query_execution_time = collect_metrics_data_mlflow(query=[1])
+        fasttrack_query_execution_time = collect_metrics_data_fasttrack(query=[1])
         test_name = f'test_collect_metrics_data_{query_key}'
         baseline = get_baseline(test_name)
         if baseline:
-            self.assertInRange(query_execution_time, baseline)
+            self.assertInRange(aim_query_execution_time, baseline)
         else:
-            write_baseline(test_name, query_execution_time)
+            write_baseline(test_name, aim_query_execution_time)

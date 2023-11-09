@@ -30,7 +30,7 @@ def random_access_metric_values_mlflow(query):
             metric_data[k] = v if not metric_data[k] else (metric_data[k] + v)/2
             
 @timing() 
-def random_access_metric_value_fasttrackml(query):
+def random_access_metric_value_fasttrack(query):
     runs = FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, filter_string=query)
     metrics = [ run.data.metrics for run in runs]
     metric_data = {}
@@ -52,7 +52,7 @@ def iterative_access_metric_values_mlflow(query):
         _ = metric.values()
              
 @timing()
-def iterative_access_metric_values_fasttrackml(query):
+def iterative_access_metric_values_fasttrack(query):
     runs = FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, filter_string=query)
     metrics = [ run.data.metrics for run in runs]
     for metric in metrics:
