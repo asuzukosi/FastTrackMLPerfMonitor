@@ -1,4 +1,4 @@
 venv
 report.html
 .aim
-mlruns
+/mlruns
