@@ -4,8 +4,8 @@ from aim.sdk.types import QueryReportMode
 
 from performance.utils import timing, MLFLOW_CLIENT, FASTTRACK_CLIENT, get_fasttrack_experiment, get_mlflow_experiment
 
-FASTTRACK_EXPERIMENT_NAME, FASTTRACK_EXPERIMENT_ID = get_fasttrack_experiment()
-MLFLOW_EXPERIMENT_NAME, MLFLOW_EXPERIMENT_ID = get_mlflow_experiment()
+FASTTRACK_EXPERIMENT_ID = get_fasttrack_experiment()
+MLFLOW_EXPERIMENT_ID = get_mlflow_experiment()
 
 
 @timing()

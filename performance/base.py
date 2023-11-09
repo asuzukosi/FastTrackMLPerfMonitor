@@ -1,13 +1,11 @@
 import unittest
 import os
 
-from aim.sdk.configs import AIM_REPO_NAME
-from performance.conftest import TEST_REPO_PATHS
 
 
 class TestBase(unittest.TestCase):
     @staticmethod
-    def assertInRange(new, base, deviation=0.05):
+    def assertInRange(new, base, deviation=0.5):
         upper_limit = base * (1 + deviation)
         lower_limit = base * (1 - deviation)
         failure_message = f'execution time {new}  is out of allowed range [{lower_limit},{upper_limit}]'

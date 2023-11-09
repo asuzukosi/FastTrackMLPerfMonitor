@@ -1,0 +1,21 @@
+
+test_collect_runs_data_0 0.12093498706817626
+test_collect_runs_data_1 0.12153079509735107
+test_collect_runs_data_2 0.10959441661834717
+test_collect_runs_data_3 0.11419188976287842
+test_iterative_access 0.06265139579772949
+test_random_access_0 0.06032907962799072
+test_random_access_1 0.05700531005859375
+test_random_access_2 0.05763120651245117
+test_collect_metrics_data_0 0.16982059478759765
+test_collect_metrics_data_1 0.16024558544158934
+test_collect_metrics_data_2 0.15965743064880372
+test_collect_metrics_data_3 0.15778760910034179
+test_query_runs_0 0.12730810642242432
+test_query_runs_1 0.12778880596160888
+test_query_runs_2 0.12911040782928468
+test_query_runs_3 0.12196729183197022
+test_query_metrics_0 0.16309769153594972
+test_query_metrics_1 0.16015250682830812
+test_query_metrics_2 0.15367717742919923
+test_query_metrics_3 0.15400209426879882

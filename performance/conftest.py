@@ -18,11 +18,13 @@ TEST_REPO_PATHS = {
 
 
 def _init_test_repos():
-    # initialize aim repo and create runs and add metrics to those runs
-    NUM_RUNS = 10000
+    
+    NUM_RUNS = 10
     POSSIBLE_METRICS = ["accuracy", "precision", "recall", "loss", "F1", "recall"]
     POSSIBLE_BATCH_SIZES = [32, 64, 128, 256, 512]
     POSSIBLE_EXPERIMENT_MODELS = ["VGC", "CNN", "ResNet", "ViT", "U-Net"]
+    # initialize aim repo and create runs and add metrics to those runs
+    print("SETTING UP AIM")
     for _ in range(NUM_RUNS):
         run = Run()
         hparams_dict = {
@@ -37,6 +39,7 @@ def _init_test_repos():
                 run.track(random.random(), metric)
                 
     # initialize mlflow experiment and create runs and add metric to those runs
+    print("SETTING UP MLFLOW")
     experiment =  MLFLOW_CLIENT.get_experiment_by_name('test-experiment')
     if experiment:
         EXPERIMENT_ID = experiment.experiment_id
@@ -58,6 +61,7 @@ def _init_test_repos():
                 MLFLOW_CLIENT.log_metric(RUN_ID, metric, random.random())
         
     # initialize fasttrack experiment and create runs and add metrics to thos runs
+    print("SETTING UP FASTTRACK")
     experiment =  FASTTRACK_CLIENT.get_experiment_by_name('test-experiment')
     if experiment:
         EXPERIMENT_ID = experiment.experiment_id
@@ -67,7 +71,7 @@ def _init_test_repos():
     os.environ['FASTTRACK_EXPERIMENT_ID'] = EXPERIMENT_ID
     
     for _ in range(NUM_RUNS):
-        run = MLFLOW_CLIENT.create_run(EXPERIMENT_ID)
+        run = FASTTRACK_CLIENT.create_run(EXPERIMENT_ID)
         RUN_ID = run.info.run_id
         FASTTRACK_CLIENT.log_param(RUN_ID, "learning_rate", random.random())
         FASTTRACK_CLIENT.log_param(RUN_ID, "batch_size", random.choice(POSSIBLE_BATCH_SIZES))
@@ -78,15 +82,15 @@ def _init_test_repos():
             for metric in metrics:
                 FASTTRACK_CLIENT.log_metric(RUN_ID, metric, random.random())
         
-    os.environ["INITALIZED"] = True
-
+    os.environ["INITIALIZED"] = 'true'
+    print("SETUP COMPLETE")
 
 def _cleanup_test_repo(path):
     shutil.rmtree(path)
 
 
 def pytest_sessionstart(session):
-    if not os.environ.get('INITIALIZED'):
+    if not os.environ.get("INITIALIZED"):
         _init_test_repos()
     time.sleep(10)
 

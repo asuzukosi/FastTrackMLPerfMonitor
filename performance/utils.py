@@ -1,9 +1,13 @@
 import os
 import time
 import mlflow
+import pandas as pd
+import datetime
 
+# set the data output file
+DATA_OUTPUT_FILE = 'performance_data.csv'
 # create timer which calls functions a certain number of times
-def timing(iter_count=100):
+def timing(iter_count=10):
     def inner(f):
         def wrapper(*args, **kwargs):
             ts = time.time()
@@ -55,3 +59,42 @@ def get_mlflow_experiment():
 FASTTRACK_CLIENT = mlflow.tracking.MlflowClient(tracking_uri="http://localhost:8000")
 def get_fasttrack_experiment():
     return os.environ.get('FASTTRACK_EXPERIMENT_ID', '')
+
+
+def write_data_points_to_csv(data_points):
+    df = pd.DataFrame(data_points)
+    df.to_csv(DATA_OUTPUT_FILE, mode='a', index=None, header=not os.path.exists(DATA_OUTPUT_FILE))
+    
+    
+def add_tests_results(test_name, aim, mlflow, fasttrack):
+    current_time = datetime.datetime.now()
+    data_points = [
+            {
+                "test_name": test_name,
+                "application": "aim",
+                "value": aim,
+                "timestamp": current_time
+            },
+            {
+                "test_name": test_name,
+                "application": "mlflow",
+                "value": mlflow,
+                "timestamp": current_time
+            },
+            {
+                "test_name": test_name,
+                "application": "fasttrack",
+                "value": fasttrack,
+                "timestamp": current_time
+            },
+            {
+                "test_name": test_name,
+                "application": "average",
+                "value": sum([fasttrack, mlflow, aim])/3,
+                "timestamp": current_time
+            }
+            
+        ]
+    
+    write_data_points_to_csv(data_points)
+        

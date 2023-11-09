@@ -4,8 +4,8 @@ from aim.web.api.runs.utils import get_run_props
 from performance.utils import timing, MLFLOW_CLIENT, FASTTRACK_CLIENT, get_fasttrack_experiment, get_mlflow_experiment
 import mlflow
 
-FASTTRACK_EXPERIMENT_NAME, FASTTRACK_EXPERIMENT_ID = get_fasttrack_experiment()
-MLFLOW_EXPERIMENT_NAME, MLFLOW_EXPERIMENT_ID = get_mlflow_experiment()
+FASTTRACK_EXPERIMENT_ID = get_fasttrack_experiment()
+MLFLOW_EXPERIMENT_ID = get_mlflow_experiment()
 
 @timing()
 def collect_runs_data_aim(query):
@@ -28,17 +28,17 @@ def collect_runs_data_aim(query):
 
 @timing()
 def collect_runs_data_mlflow(query):
-    runs = MLFLOW_CLIENT.search_runs(experiment_ids=MLFLOW_EXPERIMENT_ID, query=query)
+    runs = MLFLOW_CLIENT.search_runs(experiment_ids=MLFLOW_EXPERIMENT_ID, filter_string=query)
     runs_dict = {}
     for index, run in enumerate(runs):
-        runs_dict[index] = runs.data.to_dictionary()
+        runs_dict[index] = run.data.to_dictionary()
         
 @timing()
 def collect_runs_data_fasttrack(query):
-    runs = FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, query=query)
+    runs = FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, filter_string=query)
     runs_dict = {}
     for index, run in enumerate(runs):
-        runs_dict[index] = runs.data.to_dictionary()
+        runs_dict[index] = run.data.to_dictionary()
 
     
 @timing()
@@ -68,15 +68,16 @@ def collect_metrics_data_aim(query):
                 'props': get_run_props(run),
             }
 
+@timing()
 def collect_metrics_data_mlflow(query):
-    runs = MLFLOW_CLIENT.search_runs(experiment_ids=MLFLOW_EXPERIMENT_ID, query=query)
+    runs = MLFLOW_CLIENT.search_runs(experiment_ids=MLFLOW_EXPERIMENT_ID, filter_string=query)
     metrics = []
     for run in runs:
         metrics.append(run.data.metrics)
         
-   
+@timing()
 def collect_metrics_data_fasttrack(query):
-    runs = FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, query=query)
+    runs = FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, filter_string=query)
     metrics = []
     for run in runs:
         metrics.append(run.data.metrics)
@@ -89,10 +90,10 @@ def query_runs_aim(query):
     
 @timing()
 def query_runs_mlflow(query):
-    runs = list(MLFLOW_CLIENT.search_runs(experiment_ids=MLFLOW_EXPERIMENT_ID, query=query))
-
+    runs = list(MLFLOW_CLIENT.search_runs(experiment_ids=MLFLOW_EXPERIMENT_ID, filter_string=query))
+@timing()
 def query_runs_fasttrack(query):
-    runs = list(FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, query=query))
+    runs = list(FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, filter_string=query))
 
 @timing()
 def query_metrics_aim(query):
@@ -101,8 +102,8 @@ def query_metrics_aim(query):
     
 @timing()
 def query_metrics_mlflow(query):
-    runs = list(FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, query=query))
+    runs = list(FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, filter_string=query))
     
 @timing()
 def query_metrics_fasttrack(query):
-    runs = list(FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, query=query))
+    runs = list(FASTTRACK_CLIENT.search_runs(experiment_ids=FASTTRACK_EXPERIMENT_ID, filter_string=query))
