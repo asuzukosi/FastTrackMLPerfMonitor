@@ -15,7 +15,7 @@ n_days = 180
 
 # set the data output file
 DATA_OUTPUT_FILE = 'performance_data.csv'
-HTML_OUTPUT_FILE = '_site/index.html'
+HTML_OUTPUT_FILE = 'performance/report.png'
 
 
 # create timer which calls functions a certain number of times
@@ -68,7 +68,7 @@ def get_mlflow_experiment():
     return os.environ.get('MLFLOW_EXPERIMENT_ID', '')
 
 # setup fastrackml client
-FASTTRACK_CLIENT = mlflow.tracking.MlflowClient(tracking_uri="http://fasttrackml:5000")
+FASTTRACK_CLIENT = mlflow.tracking.MlflowClient(tracking_uri="http://localhost:8000")
 def get_fasttrack_experiment():
     return os.environ.get('FASTTRACK_EXPERIMENT_ID', '')
 
@@ -130,11 +130,11 @@ def plot_cumulative_state(df: pd.DataFrame, outfile: str):
 
     fig.update_traces(marker={'size': 4})
     fig.update_layout(title_x=0.5)
-    fig.update_yaxes(ticksuffix="", title='', rangemode="tozero")
+    fig.update_yaxes(ticksuffix=" ms", title='', rangemode="tozero")
     fig.update_xaxes(title='')
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
-    fig.write_html(outfile, include_plotlyjs='cdn')
+    fig.write_image(outfile)
 
 
 def generate_html_report():
@@ -144,6 +144,5 @@ def generate_html_report():
     now = datetime.datetime.now()
     cutoff_date = now - datetime.timedelta(days=n_days)
     data = data.loc[data["timestamp"] > cutoff_date]
-    # data = data.loc[data["test_name"] in ["test_collect_metrics_data_0", "test_collect_metrics_data_1"]]
 
     plot_cumulative_state(data, HTML_OUTPUT_FILE)

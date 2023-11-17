@@ -17,6 +17,7 @@ from performance.sdk.utils import (
 
 
 class TestDataCollectionExecutionTime(SDKTestBase):
+    
     @parameterized.expand(queries.items())
     def test_collect_runs_data(self, query_key, query):
         aim_query_execution_time = collect_runs_data_aim(query[0])
